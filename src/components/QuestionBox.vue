@@ -7,10 +7,16 @@
 
       <hr class="my-4">
 
-      <p v-for="(answer,index) in answers" v-bind:key="index">
-        {{ answer }}
-      </p>
-
+      <b-list-group>
+        <b-list-group-item
+        v-for="(answer,index) in answers" 
+        v-bind:key="index"
+        @click="selectAnswer(index)"
+        >
+          {{ answer }}
+        </b-list-group-item>
+      </b-list-group>
+    
       <b-button variant="primary" href="#">Submit</b-button>
       <b-button variant="success" href="#" @click="next">Next</b-button>
     </b-jumbotron>
@@ -23,6 +29,11 @@ export default {
     next: Function
 
   },
+  data(){
+    return{
+      selectedIndex: null
+    }
+  },
   computed:{
     answers(){
       let answers = [...this.currentQuestion.incorrect_answers];
@@ -30,7 +41,45 @@ export default {
       return answers;
     }
     
+  },
+
+  methods:{
+    selectAnswer(index){
+      this.selectedIndex = index;
+      console.log(this.selectedIndex);
+    }
   }
    
 }
 </script>
+
+// scoped means the styles written inside the tags are not global tags
+// they are only effective for this component
+
+<style scoped>
+.list-group{
+  margin-bottom:15px;
+}
+
+.list-group-item:hover{
+  background:#eee;
+  cursor: pointer;
+}
+
+.btn{
+  margin:0 5px;
+}
+
+.selected{
+  background: lightblue;
+}
+
+.correct{
+  background: lightgreen;
+}
+
+.incorrect{
+  background:red;
+}
+
+</style>
