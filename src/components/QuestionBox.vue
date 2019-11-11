@@ -11,7 +11,8 @@
         <b-list-group-item
         v-for="(answer,index) in answers" 
         v-bind:key="index"
-        @click="selectAnswer(index)"
+        @click.prevent="selectAnswer(index)"
+        :class="[selectedIndex === index ? 'selected' : '']"
         >
           {{ answer }}
         </b-list-group-item>
@@ -46,7 +47,7 @@ export default {
   methods:{
     selectAnswer(index){
       this.selectedIndex = index;
-      console.log(this.selectedIndex);
+      // console.log(this.selectedIndex);
     }
   }
    
