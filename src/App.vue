@@ -4,7 +4,14 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="6" offset="3">
-          <QuestionBox />
+
+          <!-- vue lets pass data variables and methods to its child component by using v-bind with custom attributes -->
+
+          <QuestionBox
+          v-if="questions.length"
+          v-bind:currentQuestion = "questions[index]"
+          v-bind:next = "next"
+           />
         </b-col>
       </b-row>
     </b-container>
@@ -21,12 +28,30 @@ export default {
     Header,
     QuestionBox
   },
+  data: function(){
+    return{
+      questions: [],
+      index:0
+    }
+  },
   mounted: function(){
   fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple',{
     method:'get'
-  }).then((function(response){
-    console.log(response.json());
-  }))
+  })
+  .then((response) =>{
+    return response.json();
+  }) 
+  .then((jsonData) =>{
+    this.questions = jsonData.results;
+  })
+},
+methods:{
+  // alternative syntax 
+  // next:function(){...}
+  next() {
+    this.index++
+  }
+
 }
 
 }
