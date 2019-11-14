@@ -24,6 +24,8 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
+
 export default {
   props:{
     currentQuestion: Object,
@@ -32,7 +34,8 @@ export default {
   },
   data(){
     return{
-      selectedIndex: null
+      selectedIndex: null,
+      shuffledAnswers:[]
     }
   },
   computed:{
@@ -44,14 +47,38 @@ export default {
     
   },
 
+  watch:{
+    // currentQuestion(){
+    //   this.selectedIndex = null;
+    //   this.shuffleAnswers();
+    // }
+
+    //for the questions to shuffle at the beginning of the load
+    //use  mount function and call shuffle or use handler
+
+    currentQuestion:{
+      immediate: true,
+      handler(){
+        this.selectedIndex = null;
+        this.shuffleAnswers();
+      }
+    }
+  },
+
   methods:{
     selectAnswer(index){
       this.selectedIndex = index;
       // console.log(this.selectedIndex);
+    },
+    shuffleAnswers(){
+      let answers = [...this.currentQuestion.incorrect_answers,this.currentQuestion.correct_answer];
+      this.shuffledAnswers = _.shuffle(answers);
+
     }
+
   }
-   
 }
+  
 </script>
 
 // scoped means the styles written inside the tags are not global tags
